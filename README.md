@@ -18,6 +18,12 @@ START -> extract -> analyze_layout  (vision: page images)  -> generate_hints -> 
 
 Every LLM step returns structured output (Pydantic schemas in `cv_agent/schemas.py`).
 
+## Prerequisites
+
+- Python 3.12+
+- [uv](https://docs.astral.sh/uv/)
+- [Ollama](https://ollama.com/) running locally
+
 ## Run
 
 ```powershell
@@ -26,8 +32,45 @@ uv sync
 uv run streamlit run app.py
 ```
 
-Model, Ollama URL, temperature, pages and feedback language are configurable in the
-sidebar (defaults via `OLLAMA_MODEL` / `OLLAMA_HOST` env vars).
+## Configuration
 
-The graph is also exposed to LangGraph Studio as `cv_agent` (`uv run langgraph dev`),
-with input `{"pdf_base64": "...", "job_description": "..."}`.
+| Setting | Where | Default |
+|---|---|---|
+| Model | sidebar / `OLLAMA_MODEL` | `qwen2.5vl` |
+| Ollama URL | sidebar / `OLLAMA_HOST` | Ollama default |
+| Temperature, pages, feedback language | sidebar | — |
+
+## LangGraph Studio
+
+The graph is also exposed as `cv_agent`:
+
+```powershell
+uv run langgraph dev
+```
+
+On Windows, if you see log encoding errors, set `$env:PYTHONUTF8 = "1"` first.
+
+Input: `{"pdf_base64": "...", "job_description": "..."}`
+
+## Project structure
+
+```
+app.py               Streamlit UI
+cv_agent/graph.py    LangGraph definition
+cv_agent/pdf_utils.py PDF text/image extraction
+cv_agent/schemas.py  Pydantic output schemas
+langgraph.json       LangGraph Studio config
+```
+
+## Privacy
+
+Everything runs locally: your CV is never sent to external services.
+
+## Contributing
+
+Guidelines for GitHub Copilot and contributors are in
+[.github/copilot-instructions.md](.github/copilot-instructions.md).
+
+## License
+
+[MIT](LICENSE)

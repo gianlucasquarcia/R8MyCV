@@ -10,4 +10,5 @@ dependencies = [
     "langgraph-sdk>=0.2.9",
     "streamlit>=1.66.1",
     "pymupdf>=2.0",
+    "colorama>=0.4 ; sys_platform == 'win32'",
 ]
