@@ -1,6 +1,6 @@
 # Copilot instructions for R8MyCV
 
-CV analyzer built with LangGraph + Ollama (`qwen2.5vl`) + Streamlit. Python >= 3.12, managed with `uv`.
+CV analyzer built with LangGraph + Ollama (`qwen2.5vl`) + Streamlit. Python >= 3.10, managed with `uv`.
 
 ## Layout
 - `app.py` — Streamlit UI (sidebar config, PDF upload, results rendering).
@@ -9,7 +9,11 @@ CV analyzer built with LangGraph + Ollama (`qwen2.5vl`) + Streamlit. Python >= 3
 - `cv_agent/schemas.py` — Pydantic schemas for all structured LLM output.
 - `langgraph.json` — exposes the graph as `cv_agent` for LangGraph Studio.
 
+- `tests/` — pytest suite (LLM and Ollama are faked; Streamlit UI via `AppTest`).
+- `tox.ini` — Python 3.10–3.14 matrix run with tox-uv.
+
 ## Commands
+- Test: `uv run pytest` (100% branch coverage is enforced) and `uv run tox -p` for the matrix.
 - Install: `uv sync`
 - Run UI: `uv run streamlit run app.py`
 - Studio: `uv run langgraph dev`

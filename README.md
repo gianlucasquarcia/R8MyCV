@@ -20,7 +20,7 @@ Every LLM step returns structured output (Pydantic schemas in `cv_agent/schemas.
 
 ## Prerequisites
 
-- Python 3.12+
+- Python 3.10+
 - [uv](https://docs.astral.sh/uv/)
 - [Ollama](https://ollama.com/) running locally
 
@@ -59,7 +59,15 @@ app.py               Streamlit UI
 cv_agent/graph.py    LangGraph definition
 cv_agent/pdf_utils.py PDF text/image extraction
 cv_agent/schemas.py  Pydantic output schemas
+cv_agent/settings.py Frozen `Settings` dataclass (defaults, env vars, limits)
 langgraph.json       LangGraph Studio config
+```
+
+## Testing
+
+```powershell
+uv run pytest            # tests + branch coverage, fails below 100%
+uv run tox -q -r            # Python 3.10 – 3.14 matrix (tox-uv)
 ```
 
 ## Privacy
