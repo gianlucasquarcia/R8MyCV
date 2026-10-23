@@ -8,8 +8,8 @@ has no text layer (e.g. a scanned CV).
 """
 
 import base64
-import os
 from dataclasses import dataclass, field
+from typing import TypeVar
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_ollama import ChatOllama
@@ -19,19 +19,22 @@ from pydantic import BaseModel
 
 from cv_agent.pdf_utils import extract_text, render_pages
 from cv_agent.schemas import ContentReview, CVReport, LayoutReview
+from cv_agent.settings import settings
 
-MIN_TEXT_CHARS = 200
-MAX_TEXT_CHARS = 12_000
+ModelT = TypeVar("ModelT", bound=BaseModel)
+
+MIN_TEXT_CHARS = settings.min_text_chars
+MAX_TEXT_CHARS = settings.max_text_chars
 
 
 @dataclass
 class Context:
-    model: str = os.getenv("OLLAMA_MODEL", "qwen2.5vl")
-    base_url: str = os.getenv("OLLAMA_HOST", "http://localhost:11434")
-    temperature: float = 0.2
-    num_ctx: int = 8_192
-    num_predict: int = 2_048
-    max_pages: int = 3
+    model: str = settings.model
+    base_url: str = settings.base_url
+    temperature: float = settings.temperature
+    num_ctx: int = settings.num_ctx
+    num_predict: int = settings.num_predict
+    max_pages: int = settings.max_pages
 
 
 @dataclass
@@ -57,13 +60,16 @@ def _llm(ctx: Context) -> ChatOllama:
         temperature=ctx.temperature,
         num_ctx=ctx.num_ctx,
         num_predict=ctx.num_predict,
-        repeat_penalty=1.15,
+        repeat_penalty=settings.repeat_penalty,
     )
 
 
-def _invoke_structured[T: BaseModel](
-    ctx: Context, schema: type[T], messages: list, retries: int = 2
-) -> T:
+def _invoke_structured(
+    ctx: Context,
+    schema: type[ModelT],
+    messages: list,
+    retries: int = settings.llm_retries,
+) -> ModelT:
     llm = _llm(ctx).with_structured_output(schema, method="json_schema")
     last_error: Exception | None = None
     for _ in range(retries + 1):
