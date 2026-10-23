@@ -11,6 +11,7 @@ CV analyzer built with LangGraph + Ollama (`qwen2.5vl`) + Streamlit. Python >= 3
 
 - `tests/` — pytest suite (LLM and Ollama are faked; Streamlit UI via `AppTest`).
 - `tox.ini` — Python 3.10–3.14 matrix run with tox-uv.
+- `.github/workflows/ci.yml` — runs `uv run tox` on Ubuntu and Windows; Dependabot keeps `uv` and Actions dependencies updated.
 
 ## Commands
 - Test: `uv run pytest` (100% branch coverage is enforced) and `uv run tox -p` for the matrix.
