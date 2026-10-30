@@ -64,7 +64,9 @@ class FakeGraph:
 def make_app(monkeypatch: pytest.MonkeyPatch, graph: FakeGraph, uploaded=True):
     monkeypatch.setattr(graph_module, "graph", graph)
     file = SimpleNamespace(name="cv.pdf", getvalue=lambda: b"%PDF-fake")
-    monkeypatch.setattr("streamlit.file_uploader", lambda *a, **k: file if uploaded else None)
+    monkeypatch.setattr(
+        "streamlit.file_uploader", lambda *a, **k: file if uploaded else None
+    )
     return AppTest.from_file(str(APP_PATH), default_timeout=30)
 
 

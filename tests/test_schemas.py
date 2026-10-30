@@ -1,3 +1,5 @@
+from typing import Any, cast
+
 import pytest
 from pydantic import ValidationError
 
@@ -50,4 +52,4 @@ def test_report_accepts_hint_instances() -> None:
 
 def test_report_rejects_non_list_hints() -> None:
     with pytest.raises(ValidationError):
-        CVReport(overall_score=1, summary="s", hints="nope")
+        CVReport(overall_score=1, summary="s", hints=cast(Any, "nope"))

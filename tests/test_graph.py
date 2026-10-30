@@ -1,10 +1,10 @@
 import base64
 import importlib
 from types import SimpleNamespace
-from typing import Optional
 
 import pytest
 from langchain_core.messages import HumanMessage
+from langgraph.runtime import Runtime
 
 from cv_agent.graph import (
     Context,
@@ -22,6 +22,7 @@ from cv_agent.graph import (
 from cv_agent.schemas import ContentReview, CVReport, LayoutReview
 
 graph_module = importlib.import_module("cv_agent.graph")
+
 
 class FakeLLM:
     """Stands in for ChatOllama; responses are queued per schema."""
@@ -58,8 +59,8 @@ def use_llm(monkeypatch: pytest.MonkeyPatch):
     return install
 
 
-def runtime(context: Optional[Context] = None) -> SimpleNamespace:
-    return SimpleNamespace(context=context)
+def runtime(context: Context | None = None) -> Runtime[Context]:
+    return Runtime(context=context or Context())
 
 
 def report_payload(**overrides) -> dict:
@@ -105,7 +106,9 @@ def test_image_message_embeds_images() -> None:
     message = _image_message("look", ["abc", "def"])
     assert isinstance(message, HumanMessage)
     assert message.content[0] == {"type": "text", "text": "look"}
-    assert message.content[1]["image_url"]["url"] == "data:image/png;base64,abc"
+    image = message.content[1]
+    assert isinstance(image, dict)
+    assert image["image_url"]["url"] == "data:image/png;base64,abc"
     assert len(message.content) == 3
 
 
