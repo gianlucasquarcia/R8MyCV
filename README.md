@@ -1,5 +1,10 @@
 # CV Analyzer — LangGraph + Ollama + Streamlit
 
+![Python](https://img.shields.io/badge/python-3.10%20|%203.11%20|%203.12%20|%203.13%20|%203.14%20-blue.svg)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![ty](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ty/main/assets/badge/v0.json)](https://github.com/astral-sh/ty)
+
 Upload a PDF CV and get a score, a layout review, a content review and prioritised,
 actionable hints to improve it (optionally tailored to a job description).
 Runs fully locally with the Ollama vision model `qwen2.5vl`.
