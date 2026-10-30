@@ -10,7 +10,7 @@ from cv_agent.settings import Settings, settings
 
 def test_settings_is_frozen() -> None:
     with pytest.raises(FrozenInstanceError):
-        settings.model = "other"  # type: ignore[misc]
+        setattr(settings, "model", "other")
 
 
 def test_settings_defaults() -> None:
