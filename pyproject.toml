@@ -3,11 +3,11 @@ name = "langgraph-cv-analyzer"
 version = "0.1.0"
 requires-python = ">=3.10"
 dependencies = [
-    "langchain>=1.3.18",
-    "langgraph>=1.2.11",
+    "langchain>=1.4.8",
+    "langgraph>=1.2.19",
     "langchain-ollama>=0.3.0",
-    "langgraph-cli[inmem]>=0.4.31",
-    "langgraph-sdk>=0.2.9",
+    "langgraph-cli[inmem]>=0.4.40",
+    "langgraph-sdk>=0.4.11",
     "streamlit>=1.50",
     "pymupdf>=1.25",
     "colorama>=0.4 ; sys_platform == 'win32'",
