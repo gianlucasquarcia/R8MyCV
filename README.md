@@ -9,6 +9,8 @@ Upload a PDF CV and get a score, a layout review, a content review and prioritis
 actionable hints to improve it (optionally tailored to a job description).
 Runs fully locally with the Ollama vision model `qwen2.5vl`.
 
+![CV Analyzer screenshot](static/screenshot_1.png)
+
 ## Graph
 
 ```
