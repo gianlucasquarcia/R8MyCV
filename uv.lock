@@ -1689,7 +1689,7 @@ requires-dist = [
     { name = "langchain", specifier = ">=1.4.8" },
     { name = "langchain-ollama", specifier = ">=0.3.0" },
     { name = "langgraph", specifier = ">=1.2.19" },
-    { name = "langgraph-cli", extras = ["inmem"], specifier = ">=0.4.40" },
+    { name = "langgraph-cli", extras = ["inmem"], specifier = ">=0.4.43" },
     { name = "langgraph-sdk", specifier = ">=0.4.11" },
     { name = "pymupdf", specifier = ">=1.25" },
     { name = "streamlit", specifier = ">=1.50" },
