@@ -15,6 +15,33 @@ STEP_LABELS = {
     "analyze_content": "📝 Reviewed content",
     "generate_hints": "💡 Generated improvement hints",
 }
+ANIMATION_HTML = """
+<style>
+@keyframes r8-hue {0%{background-position:0% 50%}100%{background-position:300% 50%}}
+@keyframes r8-float {0%{transform:translateY(0) rotate(0)}100%{transform:translateY(-120vh) rotate(360deg)}}
+@keyframes r8-scan {0%{top:-4px}100%{top:100%}}
+@keyframes r8-pulse {0%,100%{opacity:.55}50%{opacity:1}}
+.r8-overlay{position:fixed;inset:0;z-index:1000000;pointer-events:none;overflow:hidden;
+background:linear-gradient(120deg,rgba(127,90,240,.28),rgba(44,182,125,.28),rgba(255,137,6,.28),
+rgba(229,49,112,.28),rgba(127,90,240,.28));background-size:300% 100%;
+animation:r8-hue 8s linear infinite}
+.r8-scan{position:absolute;left:0;right:0;height:4px;background:#fff;
+box-shadow:0 0 12px 2px rgba(255,255,255,.8);animation:r8-scan 2.5s linear infinite}
+.r8-item{position:absolute;top:100vh;font-size:2rem;animation:r8-float linear infinite}
+.r8-item:nth-of-type(1){left:6%;animation-duration:7s}
+.r8-item:nth-of-type(2){left:20%;animation-duration:10s;font-size:3rem}
+.r8-item:nth-of-type(3){left:36%;animation-duration:6s;animation-delay:-2s}
+.r8-item:nth-of-type(4){left:52%;animation-duration:12s;font-size:3.5rem}
+.r8-item:nth-of-type(5){left:68%;animation-duration:8s;animation-delay:-4s}
+.r8-item:nth-of-type(6){left:84%;animation-duration:9s;font-size:2.5rem}
+.r8-label{position:absolute;top:1.5rem;left:50%;transform:translateX(-50%);padding:.6rem 1.4rem;
+border-radius:999px;background:rgba(0,0,0,.6);color:#fff;font-weight:600;
+animation:r8-pulse 1.4s ease-in-out infinite}
+</style>
+<div class="r8-overlay"><div class="r8-scan"></div><span class="r8-item">📄</span>
+<span class="r8-item">✨</span><span class="r8-item">🧠</span><span class="r8-item">💡</span>
+<span class="r8-item">📝</span><span class="r8-item">⭐</span><div class="r8-label">✨ Analyzing your CV…</div></div>
+"""
 PRIORITY_ICON = {"High": "🔴", "Medium": "🟠", "Low": "🟢"}
 
 st.set_page_config(page_title="CV Analyzer", page_icon="📄", layout="wide")
@@ -83,6 +110,8 @@ if uploaded and st.button("🔍 Analyze CV", type="primary"):
         "language": "" if language == "Same as CV" else language,
     }
     result: dict = {}
+    loader = st.empty()
+    loader.markdown(ANIMATION_HTML, unsafe_allow_html=True)
     with st.status("Analyzing your CV…", expanded=True) as status:
         try:
             for update in graph.stream(inputs, context=context, stream_mode="updates"):
@@ -96,6 +125,7 @@ if uploaded and st.button("🔍 Analyze CV", type="primary"):
             st.info(
                 f"Make sure Ollama is running at {base_url} and `{model}` is pulled."
             )
+    loader.empty()
     if "report" in result:
         st.session_state["result"] = result
         st.session_state["file_name"] = uploaded.name
